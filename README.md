@@ -8,7 +8,7 @@ Status: Alpha (do not use)
 - Main program will then require specific functions/scripts modifying, possibly new ones added, to work with best solution for local models through built-in llama-cpp-python, find relevant files and figure out.
 - When relevant files are figured out, then modify those files, delete all other in fork, and make into drop-in files for pre-configured best configuration for best current models fitting within Dynamic number of layers to GPU, then rest on system ram. 
 
-### Details:
+## Details:
 - Its a launcher for PhiData, and maybe some additional files, but the plan is to get, `Llama 3.1 70B NemoTron` and `Llama-3.1-Unhinged-Vision-8B-GGUF`, working on PhiData, then try to make a drop-in mod for that and convinience.
 
 ### Preview:
@@ -62,7 +62,7 @@ Selection; Menu Options = 1-2, Back to Main = B:
 
 ```
 
-### Links:
+## Links:
 - `https://github.com/phidatahq/phidata` - Github
 - `https://www.youtube.com/watch?v=T_P5wiJXkwk&pp` - PhiData on local models
 - `https://www.youtube.com/watch?v=d-Kh0SvgB6k&pp` - PhiData.
