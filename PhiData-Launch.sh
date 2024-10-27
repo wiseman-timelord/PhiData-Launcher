@@ -5,8 +5,8 @@
 DEBUG_MODE="false"
 USE_FASTAPI="true"
 VERBOSE_LOGGING="false"
-VIRTUAL_ENV_DIR="/media/mastar/Progs-Linux_250/Programs-External/phidata-venv"
-PHIDATA_DIR="/media/mastar/Progs-Linux_250/Programs-External/phidata-2.5.19.2"
+VIRTUAL_ENV_DIR=""
+PHIDATA_DIR=""
 LLAMA_DEFAULT_MODEL="/media/mastar/Store-Large_480/models/mradermacher/Llama-3.1-Nemotron-70B-Instruct-HF-GGUF/Llama-3.1-Nemotron-70B-Instruct-HF.Q4_K_M.gguf"
 LLAMA_VISUAL_MODEL="/media/mastar/Store-Large_480/models/FiditeNemini/Llama-3.1-Unhinged-Vision-8B-GGUF/Llama-3.1-Unhinged-Vision-8B-q8_0.gguf"
 
@@ -21,6 +21,7 @@ else
 fi
 cd "$(dirname "$0")" || exit
 PHIDATA_DIR="$(pwd)"
+VIRTUAL_ENV_DIR="$PHIDATA_DIR/phidata-venv"
 echo "Current Dir.: $(pwd)"
 sleep 2
 # Initialization Block End
@@ -199,12 +200,12 @@ while true; do
     echo
     print_data_separator
     echo
+    echo "    VENV Location:"
+    echo "$VIRTUAL_ENV_DIR"
+    echo
     echo "    Models Used:"
     echo "$(basename "$LLAMA_DEFAULT_MODEL")"
     echo "$(basename "$LLAMA_VISUAL_MODEL")"
-    echo
-    echo "    Verbose Logging:"
-    echo "$VERBOSE_LOGGING"
     echo
     print_separator
     read -p "Selection; Menu Options 1-4, Exit Program = X: " opt
