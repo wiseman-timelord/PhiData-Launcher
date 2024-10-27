@@ -42,6 +42,27 @@ false
 Selection; Menu Options 1-4, Exit Program = X: 
 
 ```
+- Install Option...
+```
+================================================================================
+    Checking and Installing Prerequisites...
+================================================================================
+Checking Python 3...
+✓ Python 3 installed and verified
+--------------------------------------------------------------------------------
+Checking pip...
+✓ pip installed and verified
+--------------------------------------------------------------------------------
+Checking python3-venv...
+✓ python3-venv installed and verified
+--------------------------------------------------------------------------------
+Checking git...
+✓ git installed and verified
+--------------------------------------------------------------------------------
+Setting up PhiData virtual environment...
+✓ Virtual environment created at /media/mastar/Progs-Linux_250/Programs-External/phidata-venv
+
+```
 - Model Selection...
 ```
 ================================================================================
