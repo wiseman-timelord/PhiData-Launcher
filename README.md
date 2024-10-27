@@ -2,11 +2,12 @@
 Status: Alpha (do not use)
 
 ## Planner...
+The plan is agents with 2 models, optimal for, thinking, coding, planning, gui interaction, etc. create pre-configuration for gui based agents for planning and getting on with tasks involving, interaction with applications and code and research, etc. for pre-configured best configuration for best current models fitting within Dynamic number of layers to GPU, then rest on system ram. 
 ### Work Done:
-- Made the launcher, to install the requirements following the information available from, as requirend then multiple sources, to find best solutions. Launcher also enables configuration of 2 models, this will be optimal for, thinking, coding, planning, gui interaction, etc.
+- Made the launcher, to install the requirements following the information available from multiple sources, to find best info. Launcher also enables configuration of User
 ### Work Remaining:
-- Main program will then require specific functions/scripts modifying, possibly new ones added, to work with best solution for local models through built-in llama-cpp-python, find relevant files and figure out.
-- When relevant files are figured out, then modify those files, delete all other in fork, and make into drop-in files for pre-configured best configuration for best current models fitting within Dynamic number of layers to GPU, then rest on system ram. 
+- Main program requires specific functions/scripts modifying, possibly new ones added, to work with best solution for local models through built-in llama-cpp-python, find relevant files and figure out.
+- When relevant files are figured out, then modify those files, delete all other in fork to cleanup, and make into drop-in files for PhiData. 
 
 ## Details:
 - Its a launcher for PhiData, and maybe some additional files, but the plan is to get, `Llama 3.1 70B NemoTron` and `Llama-3.1-Unhinged-Vision-8B-GGUF`, working on PhiData, then try to make a drop-in mod for that and convinience.
