@@ -69,6 +69,7 @@ Setting up PhiData virtual environment...
     Model Configuration Menu
 ================================================================================
 
+
     1) Set Instruct Model Path
 
     2) Set Visual Model Path
@@ -80,6 +81,7 @@ Llama-3.1-Nemotron-70B-Instruct-HF.Q4_K_M.gguf
 
     Visual Model:
 Llama-3.1-Unhinged-Vision-8B-q8_0.gguf
+
 
 ================================================================================
 Selection; Menu Options = 1-2, Back to Main = B: 
