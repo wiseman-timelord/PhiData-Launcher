@@ -15,7 +15,7 @@ The plan is agents with 2 models, optimal for, thinking, coding, planning, gui i
 - Its a launcher for PhiData, and maybe some additional files, but the plan is to get, `Llama 3.1 70B NemoTron` and `Llama-3.1-Unhinged-Vision-8B-GGUF`, working on PhiData, then try to make a drop-in mod for that and convinience.
 
 ### Preview:
-- Launcher is below
+- Main Menu is like...
 ```
 ================================================================================
     PhiData-Launch
