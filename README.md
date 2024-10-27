@@ -4,7 +4,7 @@ Status: Alpha (do not use)
 ## Planner...
 The plan is agents with 2 models, optimal for, thinking, coding, planning, gui interaction, etc. create pre-configuration for gui based agents for planning and getting on with tasks involving, interaction with applications and code and research, etc. for pre-configured best configuration for best current models fitting within Dynamic number of layers to GPU, then rest on system ram.
 ### Work Done:
-- Made the launcher, to install the requirements following the information available from multiple sources, to find best info. Launcher also enables configuration of User
+- Made the launcher, to install the requirements following the information available from multiple sources, to find best info. Launcher also enables configuration of, launch commands and relevant paths, with persistence.
 ### Work Remaining:
 - Main program requires specific functions/scripts modifying, possibly new ones added, to work with best solution for local models through built-in llama-cpp-python, find relevant files and figure out.
 - When relevant files are figured out, then modify those files, delete all other in fork to cleanup, and make into drop-in files for PhiData. 
