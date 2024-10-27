@@ -7,8 +7,9 @@ USE_FASTAPI="true"
 VERBOSE_LOGGING="false"
 VIRTUAL_ENV_DIR=""
 PHIDATA_DIR=""
-LLAMA_DEFAULT_MODEL="/media/mastar/Store-Large_480/models/mradermacher/Llama-3.1-Nemotron-70B-Instruct-HF-GGUF/Llama-3.1-Nemotron-70B-Instruct-HF.Q4_K_M.gguf"
-LLAMA_VISUAL_MODEL="/media/mastar/Store-Large_480/models/FiditeNemini/Llama-3.1-Unhinged-Vision-8B-GGUF/Llama-3.1-Unhinged-Vision-8B-q8_0.gguf"
+LLAMA_DEFAULT_MODEL=""
+LLAMA_VISUAL_MODEL=""
+PERSISTENCE_FILE="./data/persistence.txt"
 
 # Initialization Block Start
 if [ "$EUID" -ne 0 ]; then
@@ -25,6 +26,31 @@ VIRTUAL_ENV_DIR="$PHIDATA_DIR/phidata-venv"
 echo "Current Dir.: $(pwd)"
 sleep 2
 # Initialization Block End
+
+# Function to load model paths from persistence file or initialize it
+load_or_initialize_models() {
+    if [ ! -f "$PERSISTENCE_FILE" ]; then
+        echo "Persistence file not found. Initializing..."
+        mkdir -p "$(dirname "$PERSISTENCE_FILE")"
+        echo "" > "$PERSISTENCE_FILE"
+        echo "" >> "$PERSISTENCE_FILE"
+    fi
+
+    # Read models from persistence file
+    LLAMA_DEFAULT_MODEL=$(sed -n '1p' "$PERSISTENCE_FILE")
+    LLAMA_VISUAL_MODEL=$(sed -n '2p' "$PERSISTENCE_FILE")
+
+    # Validate model paths
+    [ ! -f "$LLAMA_DEFAULT_MODEL" ] && LLAMA_DEFAULT_MODEL=""
+    [ ! -f "$LLAMA_VISUAL_MODEL" ] && LLAMA_VISUAL_MODEL=""
+}
+load_or_initialize_models
+
+# Function to save model paths to persistence file
+save_models_to_persistence() {
+    echo "$LLAMA_DEFAULT_MODEL" > "$PERSISTENCE_FILE"
+    echo "$LLAMA_VISUAL_MODEL" >> "$PERSISTENCE_FILE"
+}
 
 # Function to print a separator line
 print_separator() {
@@ -65,6 +91,7 @@ toggle_args_menu() {
         echo "    3) Toggle Verbose Logging"
         echo
         print_data_separator
+        echo
         echo "    DEBUG_MODE: $DEBUG_MODE"
         echo
         echo "    USE_FASTAPI: $USE_FASTAPI"
@@ -79,6 +106,45 @@ toggle_args_menu() {
             3) VERBOSE_LOGGING=$([ "$VERBOSE_LOGGING" == "false" ] && echo "true" || echo "false") ;;
             B|b) break ;;
             *) echo "Invalid option! Please choose 1-3 or B." ;;
+        esac
+        sleep 1
+    done
+}
+
+# Set models in the models configuration menu
+toggle_models_menu() {
+    while true; do
+        clear
+        print_separator
+        echo "    Model Configuration Menu"
+        print_separator
+        echo
+        echo "    1) Set Instruct Model Path"
+        echo
+        echo "    2) Set Visual Model Path"
+        echo
+        print_data_separator
+        echo
+        echo "    Instruct Model:"
+        echo "$(basename "$LLAMA_DEFAULT_MODEL")"
+        echo
+        echo "    Visual Model:"
+        echo "$(basename "$LLAMA_VISUAL_MODEL")"
+        echo
+        echo
+        print_separator
+        read -p "Selection; Menu Options = 1-2, Back to Main = B: " opt
+        case $opt in
+            1)
+                read -p "Enter path for DEFAULT Model: " LLAMA_DEFAULT_MODEL_NEW
+                [ -f "$LLAMA_DEFAULT_MODEL_NEW" ] && LLAMA_DEFAULT_MODEL="$LLAMA_DEFAULT_MODEL_NEW" || echo "Invalid path!"
+                ;;
+            2)
+                read -p "Enter path for VISUAL Model: " LLAMA_VISUAL_MODEL_NEW
+                [ -f "$LLAMA_VISUAL_MODEL_NEW" ] && LLAMA_VISUAL_MODEL="$LLAMA_VISUAL_MODEL_NEW" || echo "Invalid path!"
+                ;;
+            B|b) break ;;
+            *) echo "Invalid option! Please choose 1-2 or B." ;;
         esac
         sleep 1
     done
@@ -184,25 +250,99 @@ install_requirements() {
     echo # Add newline after key press
 }
 
+# Validate VENV
+validate_venv() {
+    if [ ! -d "$VIRTUAL_ENV_DIR" ]; then
+        echo "Virtual environment not found at: $VIRTUAL_ENV_DIR"
+        echo "Please run 'Install PhiData Requirements' first."
+        return 1
+    fi
+
+    if [ ! -f "$VIRTUAL_ENV_DIR/bin/activate" ]; then
+        echo "Virtual environment appears corrupted: missing activation script"
+        echo "Please remove $VIRTUAL_ENV_DIR and run 'Install PhiData Requirements' again."
+        return 1
+    }
+
+    return 0
+}
+
+# Run PhiData with selected options
+run_phidata() {
+    print_separator
+    echo "    Running PhiData with the following options:"
+    echo "    Debug Mode: $DEBUG_MODE"
+    echo "    Use FastAPI: $USE_FASTAPI"
+    echo "    Verbose Logging: $VERBOSE_LOGGING"
+    echo "    Default Model: $(basename "$LLAMA_DEFAULT_MODEL")"
+    echo "    Visual Model: $(basename "$LLAMA_VISUAL_MODEL")"
+    print_separator
+
+    # Save current model paths before running
+    save_models_to_persistence
+
+    if ! validate_venv; then
+        read -n 1 -s -r -p "Press any key to return to menu..."
+        return 1
+    fi
+
+    if ! source "$VIRTUAL_ENV_DIR/bin/activate"; then
+        echo "Failed to activate virtual environment!"
+        read -n 1 -s -r -p "Press any key to return to menu..."
+        return 1
+    fi
+
+    # Base command
+    CMD="python3 run_phidata.py"
+
+    # Add configuration flags
+    [ "$DEBUG_MODE" == "true" ] && CMD="$CMD --debug"
+    [ "$USE_FASTAPI" == "true" ] && CMD="$CMD --fastapi"
+    [ "$VERBOSE_LOGGING" == "true" ] && CMD="$CMD --verbose"
+
+    # Add model paths if they exist
+    if [ -f "$LLAMA_DEFAULT_MODEL" ]; then
+        CMD="$CMD --default-model \"$LLAMA_DEFAULT_MODEL\""
+    else
+        echo "    WARNING: Default model not found at: $LLAMA_DEFAULT_MODEL"
+    fi
+
+    if [ -f "$LLAMA_VISUAL_MODEL" ]; then
+        CMD="$CMD --visual-model \"$LLAMA_VISUAL_MODEL\""
+    else
+        echo "    WARNING: Visual model not found at: $LLAMA_VISUAL_MODEL"
+    fi
+
+    echo "    Executing: $CMD"
+    if ! eval "$CMD"; then
+        echo "Failed to execute PhiData!"
+        read -n 1 -s -r -p "Press any key to return to menu..."
+        return 1
+    fi
+    sleep 2
+}
+
+# Strip model paths for displaying
+strip_model_path() {
+    basename "$1"
+}
+
 # Main Menu
 while true; do
+    clear
     print_separator
     echo "    PhiData-Launch"
     print_separator
     echo
     echo "    1) Install PhiData Requirements"
-    echo
     echo "    2) Configure Arguments and Settings"
-    echo
     echo "    3) Configure Models Used"
-    echo
     echo "    4) Run PhiData Now"
     echo
     print_data_separator
     echo
     echo "    VENV Location:"
     echo "$VIRTUAL_ENV_DIR"
-    echo
     echo "    Models Used:"
     echo "$(basename "$LLAMA_DEFAULT_MODEL")"
     echo "$(basename "$LLAMA_VISUAL_MODEL")"
@@ -214,9 +354,12 @@ while true; do
         2) toggle_args_menu ;;
         3) toggle_models_menu ;;
         4) run_phidata ;;
-        X|x) echo "    Exiting..." ; exit ;;
+        X|x)
+            echo "    Saving configuration..."
+            save_models_to_persistence
+            echo "    Exiting..."
+            exit ;;
         *) echo "    Invalid option! Please choose 1-4 or X to exit." ;;
     esac
     sleep 1
 done
-
