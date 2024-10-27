@@ -22,21 +22,17 @@ The plan is agents with 2 models, optimal for, thinking, coding, planning, gui i
 ================================================================================
 
     1) Install PhiData Requirements
-
     2) Configure Arguments and Settings
-
     3) Configure Models Used
-
     4) Run PhiData Now
 
 --------------------------------------------------------------------------------
 
+    VENV Location:
+/media/mastar/Progs-Linux_250/Programs-External/PhiData/phidata-2.5.21/phidata-venv
     Models Used:
 Llama-3.1-Nemotron-70B-Instruct-HF.Q4_K_M.gguf
 Llama-3.1-Unhinged-Vision-8B-q8_0.gguf
-
-    Verbose Logging:
-false
 
 ================================================================================
 Selection; Menu Options 1-4, Exit Program = X: 
