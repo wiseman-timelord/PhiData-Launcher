@@ -8,7 +8,7 @@ The plan is agents with 2 models, optimal for, thinking, coding, planning, gui i
 ### Work Remaining:
 - Main program requires specific functions/scripts modifying, possibly new ones added, to work with best solution for local models through built-in llama-cpp-python, find relevant files and figure out.
 - When relevant files are figured out, then modify those files, delete all other in fork to cleanup, and make into drop-in files for PhiData. 
-- Nemotron GGUF without matrix supposedly works on AMD GPU, if not will revert to possibly 1 model through Llama 3.2, otherwise may decide to go for other model, would have to be figured out for optimally 64GB system ram + 8GB Gpu.
+- Nemotron GGUF without matrix supposedly works on AMD GPU, if not will revert to possibly 1 model through Llama 3.2, otherwise may decide to go for other model, would have to be figured out for optimally 64GB system ram + 8GB Gpu, possibly multiple smaller deepseek 2.5 models?
 - Data visualization would be nice.
 
 ## Details:
