@@ -8,6 +8,7 @@ The plan is agents with 2 models, optimal for, thinking, coding, planning, gui i
 ### Work Remaining:
 - Main program requires specific functions/scripts modifying, possibly new ones added, to work with best solution for local models through built-in llama-cpp-python, find relevant files and figure out.
 - When relevant files are figured out, then modify those files, delete all other in fork to cleanup, and make into drop-in files for PhiData. 
+- Data visualization would be nice.
 
 ## Details:
 - Its a launcher for PhiData, and maybe some additional files, but the plan is to get, `Llama 3.1 70B NemoTron` and `Llama-3.1-Unhinged-Vision-8B-GGUF`, working on PhiData, then try to make a drop-in mod for that and convinience.
